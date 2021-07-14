@@ -1,8 +1,11 @@
 import { VFC } from 'react';
 import styled from 'styled-components';
+import { Draggable } from 'react-beautiful-dnd'
 
 type Props = {
+  id: string,
   text: string,
+  index: number
 }
 
 const StyledTag = styled.div`
@@ -16,9 +19,13 @@ const StyledTag = styled.div`
 
 const Tag: VFC<Props> = (props: Props) => {
   return (
-    <StyledTag>
-      # {props.text}
-    </StyledTag>
+    <Draggable key={props.id} draggableId={props.id} index={props.index}>
+      {(provided) => (
+        <StyledTag ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+          # {props.text}
+        </StyledTag>
+      )}
+    </Draggable>
   );
 };
 

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import Tag from './Tag'
 import { colors } from './colors'
+import { Droppable } from "react-beautiful-dnd";
 
 const StyledList = styled.div`
   display: flex;
@@ -21,19 +22,19 @@ const StyledList = styled.div`
 
 const mockData = [
   {
-    text: 'todo'
+    text: 'todo1'
   },
   {
-    text: 'todoadsfoadi'
+    text: 'todoadsfoadi2'
   },
   {
-    text: 'todgasgo'
+    text: 'todgasgo3'
   },
   {
-    text: 'toewaegado'
+    text: 'toewaegado4'
   },
   {
-    text: 'togsadgasfgasfasfdo'
+    text: 'togsadgasfgasfasfdo5'
   },
   {
     text: 'todgdgao'
@@ -75,9 +76,16 @@ const mockData = [
 
 const TagList = () => {
   return (
-    <StyledList>
-      {mockData.map((d,i) => <Tag key={i} text={d.text} />)}
-    </StyledList>
+    <Droppable droppableId="todolist">
+      {(provided) => (
+        <>
+          <StyledList {...provided.droppableProps} ref={provided.innerRef}>
+            {mockData.map((d,i) => <Tag key={i} id={d.text} text={d.text} index={i} />)}
+          </StyledList>
+          {provided.placeholder}
+        </>
+      )}
+    </Droppable>
   );
 };
 
