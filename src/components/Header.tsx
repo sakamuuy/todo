@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { colors } from './colors';
+import { doLogin } from '../utils/auth';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -34,7 +35,7 @@ const Header = () => {
       <Logo>
         Scheduled-TODO
       </Logo>
-      <LoginButton>
+      <LoginButton onClick={doLogin}>
         Login
       </LoginButton>
     </StyledHeader>
