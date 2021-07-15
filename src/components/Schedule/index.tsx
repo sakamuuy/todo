@@ -3,7 +3,7 @@ import { getToday } from '../../utils/date'
 import { Droppable } from 'react-beautiful-dnd';
 
 const StyledSchedule = styled.div`
-  height: calc(100% - 220px);
+  // height: calc(100% - 220px);
   // overflow-y: scroll;
 `;
 
@@ -51,8 +51,6 @@ const genArray = (num: number) => {
 
 const Schedule = () => {
   const startDay = getToday();
-
-  let time = 0;
   return  (
     <StyledSchedule>
       <ScheduleHeader>
@@ -67,11 +65,10 @@ const Schedule = () => {
             <ScheduleBody {...provided.droppableProps} ref={provided.innerRef}>
             {genArray(24 * 8).map((_,i) => {
               if (i % 8 === 0) {
-                // time++;
+                let time = i/8;
                 return (
                   <Col key={`time-${i}`}>
-                    {/* {String(time).length === 1? `0${time}:00` : `${time}:00`} */}
-                    {time}
+                    {String(time).length === 1? `0${time}:00` : `${time}:00`}
                   </Col>
                 );
               }

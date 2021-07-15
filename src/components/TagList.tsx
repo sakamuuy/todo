@@ -5,8 +5,8 @@ import { Droppable } from "react-beautiful-dnd";
 
 const StyledList = styled.div`
   display: flex;
-  position: fixed;
-  bottom: 0;
+  // position: fixed;
+  // bottom: 0;
   flex-wrap: wrap;
   align-items: center;
   padding: 8px 8px 16px;
