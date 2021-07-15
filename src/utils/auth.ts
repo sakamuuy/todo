@@ -1,5 +1,16 @@
 import firebase from "firebase"
 
+export const getLoginUser = () => {
+  return firebase.auth().currentUser;
+}
+
+export const startObserveAuth = ({ onSignIn, onSignOut }: 
+  { onSignIn: (user: firebase.User) => void; onSignOut: (user: null) => void;}) => {
+  firebase.auth().onAuthStateChanged((user) => {
+    return user? onSignIn(user) : onSignOut(user)
+  });
+}
+
 
 export const doLogin = () => {
   const provider = new firebase.auth.GoogleAuthProvider();

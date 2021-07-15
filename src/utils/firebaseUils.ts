@@ -1,7 +1,7 @@
 import firebase from "firebase";
 
 export const initializeFirebase = () => {
-  console.log(process.env)
+  if (firebase.apps.length) return;
   firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

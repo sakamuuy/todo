@@ -4,11 +4,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'sanitize.css';
 import './index.css';
-import { initializeFirebase, FStore } from './utils/firebaseUils';
-
-initializeFirebase();
-const fireStore = new FStore().getDB();
-
 
 ReactDOM.render(
   <React.StrictMode>
