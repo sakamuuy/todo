@@ -9,7 +9,7 @@ import { initializeFirebase, FStore } from './utils/firebaseUils';
 import firebase from 'firebase'
 
 initializeFirebase();
-const fireStore = new FStore().getDB();
+const db = new FStore().getDB();
 
 
 const App = () => {
@@ -18,7 +18,26 @@ const App = () => {
 
   useEffect(() => {
     startObserveAuth({
-      onSignIn: (user) => setUser(user),
+      onSignIn: (user) => {
+        setUser(user)
+
+        const userCollection = db.collection('users')
+
+        userCollection
+          .doc(user.uid)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              console.log(doc.data());
+            } else {
+              console.log('add user');
+              userCollection.doc(user.uid).set({
+                name: user.displayName
+              });
+            }
+          })
+
+      },
       onSignOut: (user) => setUser(user)
     });
   }, [])
