@@ -5,12 +5,10 @@ import Schedule from './components/Schedule';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { getLoginUser, startObserveAuth } from './utils/auth';
 import Login from './components/Login';
-import { initializeFirebase, FStore } from './utils/firebaseUils';
+import { db } from './utils/firebaseUils';
 import firebase from 'firebase'
-
-initializeFirebase();
-const db = new FStore().getDB();
-
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import ProjectList from './components/ProjectList';
 
 const App = () => {
 
@@ -46,10 +44,19 @@ const App = () => {
     <div style={{height: '100%'}}>
       <Header user={user} />
       {user? (
-        <DragDropContext onDragEnd={() => console.log('end')}>
-          <Schedule></Schedule>
-          <TagList></TagList>
-        </DragDropContext>
+        <Router>
+          <Switch>
+            <Route path="/">
+              <ProjectList user={user} />
+            </Route>
+            <Route path="/projects/:projectId">
+              <DragDropContext onDragEnd={() => console.log('end')}>
+                <Schedule></Schedule>
+                <TagList></TagList>
+              </DragDropContext>
+            </Route>
+          </Switch>
+        </Router>
       ) : (
         <Login />
       )}

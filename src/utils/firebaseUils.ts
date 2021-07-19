@@ -1,15 +1,11 @@
 import firebase from "firebase";
 
-export const initializeFirebase = () => {
-  if (firebase.apps.length) return;
-  firebase.initializeApp({
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREASE_PROJECT_ID
-  })
-};
-
-export class FStore {
+firebase.initializeApp({
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREASE_PROJECT_ID
+})
+class FStore {
   private db;
 
   constructor() {
@@ -20,3 +16,5 @@ export class FStore {
     return this.db;
   }
 }
+
+export const db = new FStore().getDB();
