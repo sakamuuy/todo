@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { useState, VFC } from 'react'
+import { useEffect, useState, VFC } from 'react'
 import { db } from '../utils/firebaseUils'
 import { Project } from '../schema'
 
@@ -7,22 +7,24 @@ type Props = {
   user: firebase.User
 }
 
-type ProjectSnapShot = firebase.firestore.QueryDocumentSnapshot<Project>[];
-
 const ProjectList: VFC<Props> = (props) => {
 
-  const [projects, setProjects] = useState<ProjectSnapShot[]>();
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  db.collection('users')
-    .doc(props.user.uid)
-    .collection('projects')
-    .get()
-    .then((data) => {
-      console.log(data)
-      const projects = data.docs;
-
-      // setProjects(data.docs as ProjectSnapShot);
-    });
+  useEffect(() => {
+    db.collection('users')
+      .doc(props.user.uid)
+      .collection('projects')
+      .get()
+      .then((querySnapshot) => {
+        const projectList: Project[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data() as Project
+          projectList.push(data);
+        });
+        setProjects([])
+      });
+  }, [])
 
   return (
     <div>
@@ -35,10 +37,12 @@ const ProjectList: VFC<Props> = (props) => {
             <th>
               最終更新日
             </th>
+            <th>
+              <button>新規追加</button>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {projects? <div>risuto</div> : <div>プロジェクト未登録</div>}
           <tr>
             <td>
 
@@ -49,6 +53,7 @@ const ProjectList: VFC<Props> = (props) => {
           </tr>
         </tbody>
       </table>
+      {projects.length? <></> : <div>未登録</div>}
     </div>
   );
 }
