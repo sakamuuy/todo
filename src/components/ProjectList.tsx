@@ -2,6 +2,7 @@ import firebase from 'firebase'
 import { useEffect, useState, VFC } from 'react'
 import { db } from '../utils/firebaseUils'
 import { Project } from '../schema'
+import { Link } from 'react-router-dom'
 
 type Props = {
   user: firebase.User
@@ -38,7 +39,9 @@ const ProjectList: VFC<Props> = (props) => {
               最終更新日
             </th>
             <th>
-              <button>新規追加</button>
+              <button>
+                <Link to={`/add`}>新規追加</Link>
+              </button>
             </th>
           </tr>
         </thead>

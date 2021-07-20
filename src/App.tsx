@@ -9,6 +9,7 @@ import { db } from './utils/firebaseUils';
 import firebase from 'firebase'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import ProjectList from './components/ProjectList';
+import ProjectForm from './components/ProjectForm';
 
 const App = () => {
 
@@ -46,7 +47,7 @@ const App = () => {
       {user? (
         <Router>
           <Switch>
-            <Route path="/">
+            <Route path="/" exact>
               <ProjectList user={user} />
             </Route>
             <Route path="/projects/:projectId">
@@ -54,6 +55,9 @@ const App = () => {
                 <Schedule></Schedule>
                 <TagList></TagList>
               </DragDropContext>
+            </Route>
+            <Route path="/add">
+              <ProjectForm user={user} />
             </Route>
           </Switch>
         </Router>
