@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
 import Header from './components/Header';
-import TagList from './components/TagList';
-import Schedule from './components/Schedule';
-import { DragDropContext } from 'react-beautiful-dnd';
 import { startObserveAuth } from './utils/auth';
 import Login from './components/Login';
 import { db } from './utils/firebaseUils';
@@ -10,6 +7,7 @@ import firebase from 'firebase'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import ProjectList from './components/ProjectList';
 import ProjectForm from './components/ProjectForm';
+import ProjectDetail from './components/ProjectDetail';
 
 const App = () => {
 
@@ -47,18 +45,9 @@ const App = () => {
       {user? (
         <Router>
           <Switch>
-            <Route path="/" exact>
-              <ProjectList user={user} />
-            </Route>
-            <Route path="/projects/:projectId">
-              <DragDropContext onDragEnd={() => console.log('end')}>
-                <Schedule></Schedule>
-                <TagList></TagList>
-              </DragDropContext>
-            </Route>
-            <Route path="/add">
-              <ProjectForm user={user} />
-            </Route>
+            <Route path="/" exact render={() => <ProjectList user={user} />} />
+            <Route path="/projects/:projectId" render={() => <ProjectDetail user={user} />} />
+            <Route path="/add" render={() => <ProjectForm user={user} />} />
           </Switch>
         </Router>
       ) : (
