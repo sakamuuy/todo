@@ -16,16 +16,20 @@ const ProjectList: VFC<Props> = (props) => {
     db.collection('users')
       .doc(props.user.uid)
       .collection('projects')
+      .limit(10)
       .get()
       .then((querySnapshot) => {
         const projectList: Project[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data() as Project
+        querySnapshot.forEach((snapshot) => {
+          const data = { 
+            id: snapshot.id,
+            ...snapshot.data()
+          } as Project
           projectList.push(data);
         });
-        setProjects([])
+        setProjects(projectList)
       });
-  }, [])
+  }, [props.user.uid])
 
   return (
     <div>
@@ -46,14 +50,18 @@ const ProjectList: VFC<Props> = (props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-
-            </td>
-            <td>
-
-            </td>
-          </tr>
+          {projects.map((p) => {
+            return (
+              <tr key={p.id} style={{'border': '1px solid #333', 'marginLeft': '16px', 'display': 'block'}}>
+                  <td style={{'padding': '8px', }}>
+                  <Link to={`/projects/${p.id}`}>{p.title}</Link>
+                  </td>
+                  <td>
+                    {/* {p.updatedAt} */}
+                  </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
       {projects.length? <></> : <div>未登録</div>}

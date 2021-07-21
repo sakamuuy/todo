@@ -23,10 +23,10 @@ export const doLogin = () => {
 
       if (!credential) throw new Error('Fail login');
 
-      const token = credential.accessToken;
-      const user = result.user;
+      // const token = credential.accessToken;
+      // const user = result.user;
 
-      console.log(token, user)
+      // console.log(token, user)
 
     }).catch((error) => {      
       // const errorCode = error.code;

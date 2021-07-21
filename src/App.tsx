@@ -1,9 +1,9 @@
-import { createContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header';
 import TagList from './components/TagList';
 import Schedule from './components/Schedule';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { getLoginUser, startObserveAuth } from './utils/auth';
+import { startObserveAuth } from './utils/auth';
 import Login from './components/Login';
 import { db } from './utils/firebaseUils';
 import firebase from 'firebase'
