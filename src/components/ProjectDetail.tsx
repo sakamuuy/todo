@@ -6,7 +6,7 @@ import { VFC } from 'react'
 import { useParams } from 'react-router'
 
 type Props = {
-  user: firebase.User | null
+  user: firebase.User
 }
 
 type ParamsType = {
@@ -19,7 +19,7 @@ const ProjectDetail: VFC<Props> = (props) => {
   return (
     <DragDropContext onDragEnd={() => console.log('end')}>
       <Schedule></Schedule>
-      <TagList></TagList>
+      <TagList uid={props.user.uid} projectId={projectId}></TagList>
     </DragDropContext>
   )
 }

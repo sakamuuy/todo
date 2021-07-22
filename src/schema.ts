@@ -3,3 +3,8 @@ export interface Project {
   title: string,
   updatedAt: string
 }
+
+export interface Todo {
+  id: string,
+  name: string
+}
