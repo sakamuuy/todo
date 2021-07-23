@@ -11,7 +11,7 @@ const StyledList = styled.div`
   // position: fixed;
   // bottom: 0;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: start;
   padding: 8px 8px 16px;
   border-top: 1px solid #eee;
   background: ${colors.lightgreen};
@@ -42,7 +42,7 @@ const TagList: VFC<Props> = (props) => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
   useEffect(() => {
-    const todoList: Todo[] = [];
+    const fetchedTodos: Todo[] = [];
     db.collection('users')
       .doc(props.uid)
       .collection('projects')
@@ -52,13 +52,13 @@ const TagList: VFC<Props> = (props) => {
       .then((snapshot) => {
         snapshot.docs.forEach(doc => {
           
-          todoList.push({
+          fetchedTodos.push({
             id: doc.id,
             ...doc.data()
           } as Todo)
         })
 
-        console.log(todoList)
+        setTodoList(fetchedTodos)
       })
   },[props.uid, props.projectId])
 
