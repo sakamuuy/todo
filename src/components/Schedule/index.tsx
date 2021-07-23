@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { getToday } from '../../utils/date'
 import { Droppable } from 'react-beautiful-dnd';
+import Dummy from './Dummy';
 
 const StyledSchedule = styled.div`
   // height: calc(100% - 220px);
@@ -72,7 +73,7 @@ const Schedule = () => {
                   </Col>
                 );
               }
-              return (<Col key={`col-${i}`}></Col>);
+              return (<Dummy id={`col-${i}`} key={`col-${i}`} index={i}></Dummy>);
             })}
             </ScheduleBody>
             {provided.placeholder}
