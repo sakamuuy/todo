@@ -1,6 +1,10 @@
-export const getToday = () => {
+export const getToday = (gapDays = 0) => {
   const d = new Date();
   const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  if (gapDays !== 0) {
+    d.setDate(d.getDate() + gapDays);
+  }
   
   return {
     year: d.getFullYear(),

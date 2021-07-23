@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { getToday } from '../../utils/date'
 import { Droppable } from 'react-beautiful-dnd';
 import Dummy from './Dummy';
+import { useState } from 'react';
 
 const StyledSchedule = styled.div`
   // height: calc(100% - 220px);
@@ -41,6 +42,12 @@ const Col = styled.div`
   color: #666;
 `;
 
+const DateController = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+`;
+
 const genArray = (num: number) => {
   const ret = [];
   for (let i=0; i<num; i++) {
@@ -51,7 +58,12 @@ const genArray = (num: number) => {
 }
 
 const Schedule = () => {
-  const startDay = getToday();
+  const [startDay, setStartDay] = useState(getToday())
+
+  const changeStartDay = () => {
+    setStartDay((getToday(7)))
+  }
+
   return  (
     <StyledSchedule>
       <ScheduleHeader>
@@ -60,6 +72,16 @@ const Schedule = () => {
           <HeaderCol key={startDay.date + i}>{startDay.date + i}日</HeaderCol>
         ))}
       </ScheduleHeader>
+      <DateController>
+        <div>
+          <button>＜＜</button>
+          <button style={{marginLeft: '8px'}}>＜</button>
+        </div>
+        <div>
+          <button style={{marginRight: '8px'}}>＞</button>
+          <button onClick={changeStartDay}>＞＞</button>
+        </div>
+      </DateController>
       <Droppable droppableId="schedule">
         {(provided) => (
           <>
