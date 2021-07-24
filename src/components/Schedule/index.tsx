@@ -60,8 +60,8 @@ const genArray = (num: number) => {
 const Schedule = () => {
   const [startDay, setStartDay] = useState(getToday())
 
-  const changeStartDay = () => {
-    setStartDay((getToday(7)))
+  const changeStartDay = (gap: number) => {
+    setStartDay((getToday(gap)))
   }
 
   return  (
@@ -74,12 +74,12 @@ const Schedule = () => {
       </ScheduleHeader>
       <DateController>
         <div>
-          <button>＜＜</button>
-          <button style={{marginLeft: '8px'}}>＜</button>
+          <button onClick={() => changeStartDay(-7)}>＜＜</button>
+          <button onClick={() => changeStartDay(-1)} style={{marginLeft: '8px'}}>＜</button>
         </div>
         <div>
-          <button style={{marginRight: '8px'}}>＞</button>
-          <button onClick={changeStartDay}>＞＞</button>
+          <button onClick={() => changeStartDay(1)} style={{marginRight: '8px'}}>＞</button>
+          <button onClick={() => changeStartDay(7)}>＞＞</button>
         </div>
       </DateController>
       <Droppable droppableId="schedule">
@@ -95,7 +95,7 @@ const Schedule = () => {
                   </Col>
                 );
               }
-              return (<Dummy id={`col-${i}`} key={`col-${i}`} index={i}></Dummy>);
+              return (<Dummy id={`${startDay.year}-${startDay.month}-${startDay.date}:${i/8}`/** yyyy-mm-dd:h */} key={`col-${i}`} index={i}></Dummy>);
             })}
             </ScheduleBody>
             {provided.placeholder}

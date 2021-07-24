@@ -1,5 +1,8 @@
+let d: Date | null;
+
 export const getToday = (gapDays = 0) => {
-  const d = new Date();
+  if (!d) d = new Date();
+
   const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   if (gapDays !== 0) {
