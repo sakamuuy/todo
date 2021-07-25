@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 type Props = {
   id: string,
-  index: number
+  index: number,
+  children: React.ReactChild
 }
 
 const Col = styled.div`
@@ -25,7 +26,7 @@ const Dummy: VFC<Props> = (props) => {
       {(provided) => {
         return (
           <Col ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-
+            {props.children? props.children : null}
           </Col>
         )
       }}

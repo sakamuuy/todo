@@ -94,12 +94,18 @@ const Schedule = () => {
               <Droppable droppableId={`day-${startDay.year}-${startDay.month}-${startDay.date + i}`}>
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {genArray(24).map((_,i) => {
+                    {genArray(24).map((_,j) => {
+                      let time = ''
+                      if (!i) {
+                        time = j>9? `${j}:00` : `0${j}:00`
+                      }
                       return (
                         <Dummy 
                           id={`${startDay.year}-${startDay.month}-${startDay.date}:${i/8}`/** yyyy-mm-dd:h */} 
                           key={`col-${i}`} 
-                          index={i}/>
+                          index={i}>
+                            {time}
+                        </Dummy>
                       )
                     })}
                     {provided.placeholder}
@@ -109,9 +115,7 @@ const Schedule = () => {
             </SchedulColumns>
           )
         })}
-        
       </ScheduleBody>
-
     </StyledSchedule>
   );
 };
