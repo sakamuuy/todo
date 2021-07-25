@@ -16,6 +16,7 @@ const Col = styled.div`
   font-size: 10px;
   font-weight: 700;
   color: #666;
+  height: 24px;
 `;
 
 const Dummy: VFC<Props> = (props) => {

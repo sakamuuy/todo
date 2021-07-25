@@ -18,8 +18,13 @@ const ScheduleHeader = styled.div`
 const ScheduleBody = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(24, 24px);
+  // grid-template-rows: repeat(24, 24px);
   overflow-y: scroll;
+`;
+
+const SchedulColumns = styled.div`
+  display: block;
+  border: 1px solid #eee;
 `;
 
 const HeaderCol = styled.div`
@@ -82,26 +87,31 @@ const Schedule = () => {
           <button onClick={() => changeStartDay(7)}>＞＞</button>
         </div>
       </DateController>
-      <Droppable droppableId="schedule">
-        {(provided) => (
-          <>
-            <ScheduleBody {...provided.droppableProps} ref={provided.innerRef}>
-            {genArray(24 * 8).map((_,i) => {
-              if (i % 8 === 0) {
-                let time = i/8;
-                return (
-                  <Col key={`time-${i}`}>
-                    {String(time).length === 1? `0${time}:00` : `${time}:00`}
-                  </Col>
-                );
-              }
-              return (<Dummy id={`${startDay.year}-${startDay.month}-${startDay.date}:${i/8}`/** yyyy-mm-dd:h */} key={`col-${i}`} index={i}></Dummy>);
-            })}
-            </ScheduleBody>
-            {provided.placeholder}
-          </>
-        )}
-      </Droppable>
+      <ScheduleBody>
+        {genArray(8).map((_,i) => {
+          return (
+            <SchedulColumns>
+              <Droppable droppableId={`day-${startDay.year}-${startDay.month}-${startDay.date + i}`}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {genArray(24).map((_,i) => {
+                      return (
+                        <Dummy 
+                          id={`${startDay.year}-${startDay.month}-${startDay.date}:${i/8}`/** yyyy-mm-dd:h */} 
+                          key={`col-${i}`} 
+                          index={i}/>
+                      )
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </SchedulColumns>
+          )
+        })}
+        
+      </ScheduleBody>
+
     </StyledSchedule>
   );
 };
