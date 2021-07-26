@@ -90,7 +90,15 @@ const TagList: VFC<Props> = (props) => {
         {(provided) => (
           <>
             <StyledList {...provided.droppableProps} ref={provided.innerRef}>
-              {todoList.map((d,i) => <Tag key={i} id={d.id} text={d.name} index={i} />)}
+              {todoList.map((d,i) => (
+                <Tag 
+                  key={i} 
+                  id={d.id} 
+                  text={d.name} 
+                  index={i} 
+                  uid={props.uid}
+                  projectId={props.projectId} />
+              ))}
             </StyledList>
             {provided.placeholder}
           </>
