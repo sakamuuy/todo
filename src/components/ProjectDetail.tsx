@@ -4,7 +4,6 @@ import TagList from "./TagList"
 import firebase from 'firebase'
 import { VFC } from 'react'
 import { useParams } from 'react-router'
-import { db } from "../utils/firebaseUils"
 
 type Props = {
   user: firebase.User
