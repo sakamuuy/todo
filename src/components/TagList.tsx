@@ -63,7 +63,7 @@ const TagList: VFC<Props> = (props) => {
   },[props.uid, props.projectId])
 
   const addTodo = async() => {
-    const tmp = [...todoList];
+    const todos = [...todoList];
     // todo: Modalize
     const name = window.prompt();
     const newTodo = await db.collection('users')
@@ -74,9 +74,14 @@ const TagList: VFC<Props> = (props) => {
       .add({
         name,
       });
-
-    tmp.push((await newTodo.get()).data() as Todo);
-    setTodoList(tmp);
+    newTodo.get().then((snapshot) => {
+      const todo = snapshot.data();
+      todos.push({
+        id: snapshot.id,
+        ...todo,
+      } as Todo)
+    })
+    setTodoList(todos);
   }
 
   return (
@@ -85,7 +90,7 @@ const TagList: VFC<Props> = (props) => {
         {(provided) => (
           <>
             <StyledList {...provided.droppableProps} ref={provided.innerRef}>
-              {todoList.map((d,i) => <Tag key={i} id={d.name} text={d.name} index={i} />)}
+              {todoList.map((d,i) => <Tag key={i} id={d.id} text={d.name} index={i} />)}
             </StyledList>
             {provided.placeholder}
           </>

@@ -4,6 +4,7 @@ import TagList from "./TagList"
 import firebase from 'firebase'
 import { VFC } from 'react'
 import { useParams } from 'react-router'
+import { db } from '../utils/firebaseUils'
 
 type Props = {
   user: firebase.User
@@ -18,6 +19,19 @@ const ProjectDetail: VFC<Props> = (props) => {
 
   const updateTodoSchedule = (result: DropResult, provided: ResponderProvided ) => {
     console.log(result, provided)
+    const todoRef = db.collection('users')
+      .doc(props.user.uid)
+      .collection('projects')
+      .doc(projectId)
+      .collection('todos')
+      .doc(result.draggableId)
+    todoRef.get().then((snapshot) => {
+      todoRef.set({
+        ...snapshot.data(),
+        startDay: result.destination?.droppableId,
+        startTime: result.destination?.index
+      })
+    })
   }
 
   return (

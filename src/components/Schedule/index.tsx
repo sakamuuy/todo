@@ -75,6 +75,7 @@ const Schedule = () => {
   const [displayDays, setDisplayDays] = useState<DisplayDay[]>([])
 
   useEffect(() => {
+    setDisplayDays([])
     daysInMonth.current = new Date(startDay.year, startDay.month + 1, 0).getDate()
     const days: DisplayDay[] = genArray(7).map((_,i) => {
       const ret = {
@@ -84,7 +85,7 @@ const Schedule = () => {
       }
       if (ret.date > daysInMonth.current) {
         ret.month++;
-        ret.date = 1;
+        ret.date = ret.date - daysInMonth.current;
       }
       return ret;
     })
@@ -116,7 +117,7 @@ const Schedule = () => {
       <ScheduleBody>
         <SchedulColumns>
           {genArray(24).map((_,i) => (
-            <Col>
+            <Col key={`colH-${i}`}>
               {i>9? `${i}:00` : `0${i}:00`}
             </Col>
           ))}
