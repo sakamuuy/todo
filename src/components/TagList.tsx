@@ -41,14 +41,19 @@ type Props = {
 const TagList: VFC<Props> = (props) => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
 
-  useEffect(() => {
-    const fetchedTodos: Todo[] = [];
-    db.collection('users')
+  const fetchTodoList = () => {
+    return db.collection('users')
       .doc(props.uid)
       .collection('projects')
       .doc(props.projectId)
       .collection('todos')
       .get()
+  }
+
+  useEffect(() => {
+    const fetchedTodos: Todo[] = [];
+    
+    fetchTodoList()
       .then((snapshot) => {
         snapshot.docs.forEach(doc => {
           
@@ -80,8 +85,25 @@ const TagList: VFC<Props> = (props) => {
         id: snapshot.id,
         ...todo,
       } as Todo)
+      setTodoList(todos);
     })
-    setTodoList(todos);
+  }
+
+  const onUpdateTodoList = () => {
+    const fetchedTodos: Todo[] = [];
+    
+    fetchTodoList()
+      .then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          
+          fetchedTodos.push({
+            id: doc.id,
+            ...doc.data()
+          } as Todo)
+        })
+
+        setTodoList(fetchedTodos)
+      })
   }
 
   return (
@@ -97,7 +119,8 @@ const TagList: VFC<Props> = (props) => {
                   text={d.name} 
                   index={i} 
                   uid={props.uid}
-                  projectId={props.projectId} />
+                  projectId={props.projectId}
+                  onUpdateTodo={onUpdateTodoList} />
               ))}
             </StyledList>
             {provided.placeholder}

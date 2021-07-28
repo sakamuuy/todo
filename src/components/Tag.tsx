@@ -10,7 +10,8 @@ type Props = {
   text: string,
   index: number,
   uid: string,
-  projectId: string
+  projectId: string,
+  onUpdateTodo: () => void
 }
 
 const StyledTag = styled.div`
@@ -65,17 +66,22 @@ const Tag: VFC<Props> = (props: Props) => {
     if (!newName) {
       return alert('required')
     }
-    todoRef.get().then((snapshot) => {
+    todoRef.get().then(async(snapshot) => {
       const d = snapshot.data()
-      todoRef.set({
+      await todoRef.set({
         ...d,
         name: newName
       } as Todo)
+      
+      props.onUpdateTodo()
     })
   }
 
   const deleteTag = () => {
-
+    todoRef?.delete()
+      .then(() => {
+        props.onUpdateTodo()
+      })
   }
 
   return (
@@ -91,7 +97,7 @@ const Tag: VFC<Props> = (props: Props) => {
           {isOpenMenu? (
             <Menu>
               <li onClick={editTag} >edit</li>
-              <li>delete</li>
+              <li onClick={deleteTag}>delete</li>
             </Menu>
           ) : null}
         </StyledTag>
