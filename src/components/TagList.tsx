@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import Tag from './Tag'
+import Tag from './molecules/TodoTag/TodoTag'
 import { colors } from './colors'
 import { Droppable } from "react-beautiful-dnd";
 import { db } from "../utils/firebaseUils";
