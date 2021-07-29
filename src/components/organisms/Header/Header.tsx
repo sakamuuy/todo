@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import { colors } from './colors';
-import { doLogin } from '../utils/auth';
-import { VFC } from 'react';
-import firebase from 'firebase'
+import { colors } from '../../colors';
+import firebase from 'firebase';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -30,23 +28,35 @@ const LoginButton = styled.button`
   }
 `;
 
-type Props = {
-  user: firebase.User | null
+export type Props = {
+  doLogin: () => void
 }
 
-const Header: VFC<Props> = (props) => {
-
+export function Presentation(props: Props & { user: firebase.User | null}) {
   return (
     <StyledHeader>
       <Logo>
         Scheduled-TODO
       </Logo>
       {!props.user?
-      (<LoginButton onClick={doLogin}>
+      (<LoginButton onClick={props.doLogin}>
         Login
       </LoginButton>):<></>}
     </StyledHeader>
   )
-};
+}
 
-export default Header;
+// const Header: VFC<Props> = (props) => {
+
+//   return (
+//     <StyledHeader>
+//       <Logo>
+//         Scheduled-TODO
+//       </Logo>
+//       {!props.user?
+//       (<LoginButton onClick={doLogin}>
+//         Login
+//       </LoginButton>):<></>}
+//     </StyledHeader>
+//   )
+// };

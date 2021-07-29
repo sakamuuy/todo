@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import Header from './components/Header';
+import { createContext, useEffect, useState } from 'react'
+import { Header } from './components/organisms/Header'
 import { startObserveAuth } from './utils/auth';
 import Login from './components/Login';
 import { db } from './utils/firebaseUils';
@@ -9,8 +9,9 @@ import ProjectList from './components/ProjectList';
 import ProjectForm from './components/ProjectForm';
 import ProjectDetail from './components/ProjectDetail';
 
-const App = () => {
+export const UserContext = createContext<firebase.User | null>(null);
 
+export function App() {
   const [user, setUser] = useState<firebase.User | null>(null);
 
   useEffect(() => {
@@ -41,20 +42,20 @@ const App = () => {
 
   return (
     <div style={{height: '100%'}}>
-      <Header user={user} />
-      {user? (
-        <Router>
-          <Switch>
-            <Route path="/" exact render={() => <ProjectList user={user} />} />
-            <Route path="/projects/:projectId" render={() => <ProjectDetail user={user} />} />
-            <Route path="/add" render={() => <ProjectForm user={user} />} />
-          </Switch>
-        </Router>
-      ) : (
-        <Login />
-      )}
+      <UserContext.Provider value={user}>
+        <Header/>
+        {user? (
+          <Router>
+            <Switch>
+              <Route path="/" exact render={() => <ProjectList user={user} />} />
+              <Route path="/projects/:projectId" render={() => <ProjectDetail user={user} />} />
+              <Route path="/add" render={() => <ProjectForm user={user} />} />
+            </Switch>
+          </Router>
+        ) : (
+          <Login />
+        )}
+      </UserContext.Provider>
     </div>
   );
 }
-
-export default App;
