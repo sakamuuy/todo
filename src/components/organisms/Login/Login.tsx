@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { colors } from './colors';
-import { doLogin } from '../utils/auth';
+import { colors } from '../../colors';
 
 const Box = styled.div`
   display: flex;
@@ -21,13 +20,11 @@ const LoginButton = styled.button`
   }
 `;
 
-// const Text = styled.p`
-//   font-size: 12px;
-//   color: #888;
-//   text-align: center;
-// `;
+export type Props = {
+  doLogin: () => void
+}
 
-const Login = () => {
+export function Presentation({ doLogin }: Props) {
   return (
     <Box>
       <div style={{ textAlign: 'center'}}>
@@ -37,5 +34,3 @@ const Login = () => {
     </Box>
   )
 }
-
-export default Login;

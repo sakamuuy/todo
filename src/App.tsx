@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { Header } from './components/organisms/Header'
 import { startObserveAuth } from './utils/auth';
-import Login from './components/Login';
+import { Login } from './components/organisms/Login';
 import { db } from './utils/firebaseUils';
 import firebase from 'firebase'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
