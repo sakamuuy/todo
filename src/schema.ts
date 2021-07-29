@@ -1,9 +1,13 @@
+export interface User {
+  uid: string;
+  name: string;
+}
+
 export interface Project {
   id: string,
   title: string,
   updatedAt: string
 }
-
 
 interface TodoBase {
   id: string,

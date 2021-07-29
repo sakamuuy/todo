@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { colors } from '../../colors';
 import firebase from 'firebase';
+import { Logo } from '../../atoms/Logo';
+import { LoginButton } from '../../atoms/LoginButton';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -11,23 +12,6 @@ const StyledHeader = styled.header`
   border-bottom: 1px solid #eee;
 `;
 
-const Logo = styled.div`
-  color: ${colors.pink};
-  font-size: 24px;
-`;
-
-const LoginButton = styled.button`
-  font-size: 12px;
-  background: ${colors.secondaryPink};
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-
-  &:active {
-    opacity: 0.3;
-  }
-`;
-
 export type Props = {
   doLogin: () => void
 }
@@ -35,28 +19,8 @@ export type Props = {
 export function Presentation(props: Props & { user: firebase.User | null}) {
   return (
     <StyledHeader>
-      <Logo>
-        Scheduled-TODO
-      </Logo>
-      {!props.user?
-      (<LoginButton onClick={props.doLogin}>
-        Login
-      </LoginButton>):<></>}
+      <Logo />
+      {!props.user? <LoginButton onclick={props.doLogin} /> :<></>}
     </StyledHeader>
   )
 }
-
-// const Header: VFC<Props> = (props) => {
-
-//   return (
-//     <StyledHeader>
-//       <Logo>
-//         Scheduled-TODO
-//       </Logo>
-//       {!props.user?
-//       (<LoginButton onClick={doLogin}>
-//         Login
-//       </LoginButton>):<></>}
-//     </StyledHeader>
-//   )
-// };

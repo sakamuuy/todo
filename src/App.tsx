@@ -8,20 +8,18 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import ProjectList from './components/ProjectList';
 import ProjectForm from './components/ProjectForm';
 import ProjectDetail from './components/ProjectDetail';
+import { User } from './schema'
 
-export const UserContext = createContext<firebase.User | null>(null);
+export const UserContext = createContext<User | null>(null);
 
 export function App() {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     startObserveAuth({
-      onSignIn: (user) => {
-        setUser(user)
+      onSignIn: async (user) => {
 
-        const userCollection = db.collection('users')
-
-        userCollection
+        await db.collection('users')
           .doc(user.uid)
           .get()
           .then((doc) => {
@@ -29,12 +27,16 @@ export function App() {
               console.log(doc.data());
             } else {
               console.log('add user');
-              userCollection.doc(user.uid).set({
+              db.collection('users').doc(user.uid).set({
                 name: user.displayName
               });
             }
           })
-
+        
+        setUser({
+          uid: user.uid,
+          name: user.displayName? user.displayName : `${new Date()}_user`
+        })
       },
       onSignOut: (user) => setUser(user)
     });
