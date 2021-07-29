@@ -1,5 +1,5 @@
-import styled from "styled-components"
-import { colors } from "../../colors"
+import styled from 'styled-components'
+import { colors } from '../../colors'
 
 const LoginButton = styled.button`
   font-size: 12px;
@@ -11,12 +11,8 @@ const LoginButton = styled.button`
   &:active {
     opacity: 0.3;
   }
-`;
+`
 
-export function Presentation({onclick}: {onclick: () => void}) {
-  return (
-    <LoginButton onClick={onclick}>
-      Login
-    </LoginButton>
-  )
+export function Presentation({ onclick }: { onclick: () => void }) {
+  return <LoginButton onClick={onclick}>Login</LoginButton>
 }

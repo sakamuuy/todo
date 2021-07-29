@@ -3,13 +3,11 @@ import { useHeader } from './useHeader'
 import { UserContext } from '../../../App'
 
 export function Header() {
-  const { doLogin } = useHeader();
+  const { doLogin } = useHeader()
 
   return (
     <UserContext.Consumer>
-      {(value) => (
-        <Presentation user={value} doLogin={doLogin} />
-      )}
+      {(value) => <Presentation user={value} doLogin={doLogin} />}
     </UserContext.Consumer>
   )
 }

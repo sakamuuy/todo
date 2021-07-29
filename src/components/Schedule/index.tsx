@@ -1,32 +1,32 @@
 import styled from 'styled-components'
 import { getToday } from '../../utils/date'
-import { Droppable } from 'react-beautiful-dnd';
-import Dummy from './Dummy';
-import { useEffect, useState, useRef } from 'react';
-import { SubscribedTodo } from '../../schema';
+import { Droppable } from 'react-beautiful-dnd'
+import Dummy from './Dummy'
+import { useEffect, useState, useRef } from 'react'
+import { SubscribedTodo } from '../../schema'
 
 const StyledSchedule = styled.div`
   // height: calc(100% - 220px);
   // overflow-y: scroll;
-`;
+`
 
 const ScheduleHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   padding: 8px 0;
-`;
+`
 
 const ScheduleBody = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   // grid-template-rows: repeat(24, 24px);
   overflow-y: scroll;
-`;
+`
 
 const SchedulColumns = styled.div`
   display: block;
   border: 1px solid #eee;
-`;
+`
 
 const HeaderCol = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ const HeaderCol = styled.div`
   font-size: 12px;
   font-weight: 700;
   color: #333;
-`;
+`
 
 export const Col = styled.div`
   display: flex;
@@ -47,27 +47,26 @@ export const Col = styled.div`
   font-weight: 700;
   color: #666;
   height: 24px;
-`;
+`
 
 const DateController = styled.div`
   display: flex;
   justify-content: space-between;
-
-`;
+`
 
 const genArray = (num: number) => {
-  const ret = [];
-  for (let i=0; i<num; i++) {
-    ret.push(i);
+  const ret = []
+  for (let i = 0; i < num; i++) {
+    ret.push(i)
   }
 
-  return ret;
+  return ret
 }
 
 type DisplayDay = {
-  year: number;
-  month: number;
-  date: number;
+  year: number
+  month: number
+  date: number
 }
 
 type Props = {
@@ -75,56 +74,70 @@ type Props = {
 }
 
 function Schedule(props: Props) {
-  let daysInMonth = useRef(0);
+  let daysInMonth = useRef(0)
   const [startDay, setStartDay] = useState(getToday())
   const [displayDays, setDisplayDays] = useState<DisplayDay[]>([])
 
   useEffect(() => {
     setDisplayDays([])
-    daysInMonth.current = new Date(startDay.year, startDay.month + 1, 0).getDate()
-    const days: DisplayDay[] = genArray(7).map((_,i) => {
+    daysInMonth.current = new Date(
+      startDay.year,
+      startDay.month + 1,
+      0
+    ).getDate()
+    const days: DisplayDay[] = genArray(7).map((_, i) => {
       const ret = {
         year: startDay.year,
         month: startDay.month,
-        date: startDay.date + i
+        date: startDay.date + i,
       }
       if (ret.date > daysInMonth.current) {
-        ret.month++;
-        ret.date = ret.date - daysInMonth.current;
+        ret.month++
+        ret.date = ret.date - daysInMonth.current
       }
-      return ret;
+      return ret
     })
     setDisplayDays(days)
   }, [startDay])
 
   const changeStartDay = (gap: number) => {
-    setStartDay((getToday(gap)))
+    setStartDay(getToday(gap))
   }
 
-  return  (
+  return (
     <StyledSchedule>
       <ScheduleHeader>
         <HeaderCol></HeaderCol>
         {displayDays.map((d) => (
-          <HeaderCol key={d.date}>{d.month}/{d.date}</HeaderCol>
+          <HeaderCol key={d.date}>
+            {d.month}/{d.date}
+          </HeaderCol>
         ))}
       </ScheduleHeader>
       <DateController>
         <div>
           <button onClick={() => changeStartDay(-7)}>＜＜</button>
-          <button onClick={() => changeStartDay(-1)} style={{marginLeft: '8px'}}>＜</button>
+          <button
+            onClick={() => changeStartDay(-1)}
+            style={{ marginLeft: '8px' }}
+          >
+            ＜
+          </button>
         </div>
         <div>
-          <button onClick={() => changeStartDay(1)} style={{marginRight: '8px'}}>＞</button>
+          <button
+            onClick={() => changeStartDay(1)}
+            style={{ marginRight: '8px' }}
+          >
+            ＞
+          </button>
           <button onClick={() => changeStartDay(7)}>＞＞</button>
         </div>
       </DateController>
       <ScheduleBody>
         <SchedulColumns>
-          {genArray(24).map((_,i) => (
-            <Col key={`colH-${i}`}>
-              {i>9? `${i}:00` : `0${i}:00`}
-            </Col>
+          {genArray(24).map((_, i) => (
+            <Col key={`colH-${i}`}>{i > 9 ? `${i}:00` : `0${i}:00`}</Col>
           ))}
         </SchedulColumns>
         {displayDays.map((d) => {
@@ -134,12 +147,15 @@ function Schedule(props: Props) {
               <Droppable droppableId={dayKey}>
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {genArray(24).map((_,j) => {
+                    {genArray(24).map((_, j) => {
                       return (
-                        <Dummy 
-                          id={`${d.year}-${d.month}-${d.date}:${j}`/** yyyy-mm-dd:h */} 
-                          key={`col-${j}`} 
-                          index={j} />
+                        <Dummy
+                          id={
+                            `${d.year}-${d.month}-${d.date}:${j}` /** yyyy-mm-dd:h */
+                          }
+                          key={`col-${j}`}
+                          index={j}
+                        />
                       )
                     })}
                     {provided.placeholder}
@@ -151,7 +167,7 @@ function Schedule(props: Props) {
         })}
       </ScheduleBody>
     </StyledSchedule>
-  );
-};
+  )
+}
 
-export default Schedule;
+export default Schedule

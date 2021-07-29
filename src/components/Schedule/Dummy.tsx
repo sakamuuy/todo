@@ -1,10 +1,10 @@
 import { VFC } from 'react'
-import { Draggable } from "react-beautiful-dnd"
+import { Draggable } from 'react-beautiful-dnd'
 import { Col } from './index'
 
 type Props = {
-  id: string,
-  index: number,
+  id: string
+  index: number
 }
 
 const Dummy: VFC<Props> = (props) => {
@@ -12,11 +12,15 @@ const Dummy: VFC<Props> = (props) => {
     <Draggable key={props.id} draggableId={props.id} index={props.index}>
       {(provided) => {
         return (
-          <Col ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}></Col>
+          <Col
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          ></Col>
         )
       }}
     </Draggable>
-  );
-};
+  )
+}
 
-export default Dummy;
+export default Dummy

@@ -1,7 +1,5 @@
-import { Presentation } from "./Logo";
+import { Presentation } from './Logo'
 
 export function Logo() {
-  return (
-    <Presentation />
-  )
+  return <Presentation />
 }

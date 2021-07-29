@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { colors } from '../../colors';
+import styled from 'styled-components'
+import { colors } from '../../colors'
 
 const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 40%;
-`;
+`
 
 const LoginButton = styled.button`
   font-size: 16px;
@@ -18,7 +18,7 @@ const LoginButton = styled.button`
   &:active {
     opacity: 0.3;
   }
-`;
+`
 
 export type Props = {
   doLogin: () => void
@@ -27,7 +27,7 @@ export type Props = {
 export function Presentation({ doLogin }: Props) {
   return (
     <Box>
-      <div style={{ textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         <LoginButton onClick={doLogin}>Login</LoginButton>
         <p>with your Google account.</p>
       </div>

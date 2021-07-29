@@ -9,8 +9,7 @@ type Props = {
 }
 
 const ProjectList: VFC<Props> = (props) => {
-
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([])
 
   useEffect(() => {
     db.collection('users')
@@ -19,16 +18,16 @@ const ProjectList: VFC<Props> = (props) => {
       .limit(10)
       .get()
       .then((querySnapshot) => {
-        const projectList: Project[] = [];
+        const projectList: Project[] = []
         querySnapshot.forEach((snapshot) => {
-          const data = { 
+          const data = {
             id: snapshot.id,
-            ...snapshot.data()
+            ...snapshot.data(),
           } as Project
-          projectList.push(data);
-        });
+          projectList.push(data)
+        })
         setProjects(projectList)
-      });
+      })
   }, [props.user.uid])
 
   return (
@@ -36,12 +35,8 @@ const ProjectList: VFC<Props> = (props) => {
       <table>
         <thead>
           <tr>
-            <th>
-              プロジェクト名
-            </th>
-            <th>
-              最終更新日
-            </th>
+            <th>プロジェクト名</th>
+            <th>最終更新日</th>
             <th>
               <button>
                 <Link to={`/add`}>新規追加</Link>
@@ -52,21 +47,26 @@ const ProjectList: VFC<Props> = (props) => {
         <tbody>
           {projects.map((p) => {
             return (
-              <tr key={p.id} style={{'border': '1px solid #333', 'marginLeft': '16px', 'display': 'block'}}>
-                  <td style={{'padding': '8px', }}>
+              <tr
+                key={p.id}
+                style={{
+                  border: '1px solid #333',
+                  marginLeft: '16px',
+                  display: 'block',
+                }}
+              >
+                <td style={{ padding: '8px' }}>
                   <Link to={`/projects/${p.id}`}>{p.title}</Link>
-                  </td>
-                  <td>
-                    {/* {p.updatedAt} */}
-                  </td>
+                </td>
+                <td>{/* {p.updatedAt} */}</td>
               </tr>
             )
           })}
         </tbody>
       </table>
-      {projects.length? <></> : <div>未登録</div>}
+      {projects.length ? <></> : <div>未登録</div>}
     </div>
-  );
+  )
 }
 
 export default ProjectList

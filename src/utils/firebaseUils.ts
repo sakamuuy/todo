@@ -1,20 +1,20 @@
-import firebase from "firebase";
+import firebase from 'firebase'
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREASE_PROJECT_ID
+  projectId: process.env.REACT_APP_FIREASE_PROJECT_ID,
 })
 class FStore {
-  private db;
+  private db
 
   constructor() {
-    this.db = firebase.firestore();
+    this.db = firebase.firestore()
   }
 
   getDB() {
-    return this.db;
+    return this.db
   }
 }
 
-export const db = new FStore().getDB();
+export const db = new FStore().getDB()
