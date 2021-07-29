@@ -4,11 +4,22 @@ export interface Project {
   updatedAt: string
 }
 
-export interface Todo {
+
+interface TodoBase {
   id: string,
   name: string,
+  index: number,
   startDay?: string,
   startTime?: string,
   endDay?: string,
   endTime?: string
 }
+export interface UnsubscribedTodo extends TodoBase {
+  isSubscribed: false
+}
+
+export interface SubscribedTodo extends TodoBase {
+  isSubscribed: true
+}
+
+export type Todo = SubscribedTodo | UnsubscribedTodo

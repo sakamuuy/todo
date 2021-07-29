@@ -3,6 +3,7 @@ import { getToday } from '../../utils/date'
 import { Droppable } from 'react-beautiful-dnd';
 import Dummy from './Dummy';
 import { useEffect, useState, useRef } from 'react';
+import { SubscribedTodo } from '../../schema';
 
 const StyledSchedule = styled.div`
   // height: calc(100% - 220px);
@@ -69,7 +70,11 @@ type DisplayDay = {
   date: number;
 }
 
-const Schedule = () => {
+type Props = {
+  todoList: SubscribedTodo[]
+}
+
+function Schedule(props: Props) {
   let daysInMonth = useRef(0);
   const [startDay, setStartDay] = useState(getToday())
   const [displayDays, setDisplayDays] = useState<DisplayDay[]>([])

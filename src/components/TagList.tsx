@@ -4,7 +4,8 @@ import { colors } from './colors'
 import { Droppable } from "react-beautiful-dnd";
 import { db } from "../utils/firebaseUils";
 import { useEffect, useState, VFC } from 'react'
-import { Todo } from '../schema'
+import { UnsubscribedTodo } from '../schema'
+import { fetchTodoList } from './ProjectDetail'
 
 const StyledList = styled.div`
   display: flex;
@@ -35,40 +36,32 @@ const AddButton = styled.button`
 
 type Props = {
   uid: string,
-  projectId: string
+  projectId: string,
+  todoList: UnsubscribedTodo[],
+  onUpdateTodoList: () => void
 }
 
 const TagList: VFC<Props> = (props) => {
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  // const [todoList, setTodoList] = useState<Todo[]>([]);
 
-  const fetchTodoList = () => {
-    return db.collection('users')
-      .doc(props.uid)
-      .collection('projects')
-      .doc(props.projectId)
-      .collection('todos')
-      .get()
-  }
-
-  useEffect(() => {
-    const fetchedTodos: Todo[] = [];
+  // useEffect(() => {
+  //   const fetchedTodos: Todo[] = [];
     
-    fetchTodoList()
-      .then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-          
-          fetchedTodos.push({
-            id: doc.id,
-            ...doc.data()
-          } as Todo)
-        })
+  //   fetchTodoList({uid: props.uid, projectId: props.projectId})
+  //     .then((snapshot) => {
+  //       snapshot.docs.forEach(doc => {
+  //         fetchedTodos.push({
+  //           id: doc.id,
+  //           ...doc.data()
+  //         } as Todo)
+  //       })
 
-        setTodoList(fetchedTodos)
-      })
-  },[props.uid, props.projectId])
+  //       setTodoList(fetchedTodos)
+  //     })
+  // },[props.uid, props.projectId])
 
   const addTodo = async() => {
-    const todos = [...todoList];
+    const todos = [...props.todoList];
     // todo: Modalize
     const name = window.prompt();
     const newTodo = await db.collection('users')
@@ -78,32 +71,8 @@ const TagList: VFC<Props> = (props) => {
       .collection('todos')
       .add({
         name,
-      });
-    newTodo.get().then((snapshot) => {
-      const todo = snapshot.data();
-      todos.push({
-        id: snapshot.id,
-        ...todo,
-      } as Todo)
-      setTodoList(todos);
-    })
-  }
-
-  const onUpdateTodoList = () => {
-    const fetchedTodos: Todo[] = [];
-    
-    fetchTodoList()
-      .then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-          
-          fetchedTodos.push({
-            id: doc.id,
-            ...doc.data()
-          } as Todo)
-        })
-
-        setTodoList(fetchedTodos)
       })
+    props.onUpdateTodoList();
   }
 
   return (
@@ -112,7 +81,7 @@ const TagList: VFC<Props> = (props) => {
         {(provided) => (
           <>
             <StyledList {...provided.droppableProps} ref={provided.innerRef}>
-              {todoList.map((d,i) => (
+              {props.todoList.map((d,i) => (
                 <Tag 
                   key={i} 
                   id={d.id} 
@@ -120,7 +89,7 @@ const TagList: VFC<Props> = (props) => {
                   index={i} 
                   uid={props.uid}
                   projectId={props.projectId}
-                  onUpdateTodo={onUpdateTodoList} />
+                  onUpdateTodo={props.onUpdateTodoList} />
               ))}
             </StyledList>
             {provided.placeholder}
