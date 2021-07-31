@@ -1,13 +1,15 @@
 import { Presentation } from './TodoTag'
 import { useTodoTag } from './useTodoTag'
 
-export function TodoTag(
-  pProjectId: string,
-  pId: string,
-  pText: string,
-  pIndex: number
-) {
-  const props = useTodoTag({ projectId: pProjectId, id: pId })
+type Props = {
+  projectId: string
+  id: string
+  text: string
+  index: number
+}
 
-  return <Presentation text={pText} index={pIndex} {...props} />
+export function TodoTag({projectId, id, text, index}: Props) {
+  const props = useTodoTag({ projectId: projectId, id: id })
+
+  return <Presentation text={text} index={index} {...props} />
 }

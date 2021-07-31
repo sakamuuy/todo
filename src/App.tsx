@@ -7,7 +7,7 @@ import firebase from 'firebase'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import ProjectList from './components/ProjectList';
 import ProjectForm from './components/ProjectForm';
-import ProjectDetail from './components/ProjectDetail';
+import {ProjectDetail} from './components/pages/ProjectDetail';
 import { User } from './schema'
 
 export const UserContext = createContext<User | null>(null);

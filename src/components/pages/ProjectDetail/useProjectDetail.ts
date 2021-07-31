@@ -1,23 +1,13 @@
 import {
-  DragDropContext,
   DropResult,
   ResponderProvided,
 } from 'react-beautiful-dnd'
-import Schedule from './Schedule'
-import TagList from './TagList'
-import firebase from 'firebase'
-import { useEffect, VFC, useState } from 'react'
-import { useParams } from 'react-router'
-import { db } from '../utils/firebaseUils'
-import { SubscribedTodo, Todo, UnsubscribedTodo } from '../schema'
-
-type Props = {
-  user: firebase.User
-}
-
-type ParamsType = {
-  projectId: string
-}
+import { db } from '../../../utils/firebaseUils'
+import { Todo, UnsubscribedTodo, SubscribedTodo } from '../../../schema'
+import { useContext, useEffect, useState } from 'react'
+import { UserContext } from '../../../App'
+import { useParams } from 'react-router-dom'
+import { Props } from './ProjectDetail'
 
 export const fetchTodoList = ({
   uid,
@@ -35,20 +25,21 @@ export const fetchTodoList = ({
     .get()
 }
 
-const ProjectDetail: VFC<Props> = (props) => {
-  const { projectId } = useParams<ParamsType>()
-  const [unsubuscribedTodos, setUnsubuscribedTodos] = useState<
-    UnsubscribedTodo[]
-  >([])
+export function useProjectDetail(): Props {
+  const user = useContext(UserContext)
+  const { projectId } = useParams<{projectId: string}>()
+  const [unsubuscribedTodos, setUnsubuscribedTodos] = useState<UnsubscribedTodo[]>([])
   const [subscribedTodos, setSubuscribedTodos] = useState<SubscribedTodo[]>([])
 
   useEffect(() => {
-    const fetchedTodos: Todo[] = []
+    if (!user) return;
 
+    const fetchedTodos: Todo[] = []
     fetchTodoList({
-      uid: props.user.uid,
+      uid: user.uid,
       projectId: projectId,
-    }).then((snapshot) => {
+    })
+    .then((snapshot) => {
       snapshot.docs.forEach((doc) => {
         fetchedTodos.push({
           id: doc.id,
@@ -68,16 +59,17 @@ const ProjectDetail: VFC<Props> = (props) => {
       setUnsubuscribedTodos(unsubuscribeds)
       setSubuscribedTodos(subscribeds)
     })
-  }, [props.user.uid, projectId])
+  }, [user?.uid, projectId])
 
   const updateTodoSchedule = (
     result: DropResult,
     provided: ResponderProvided
   ) => {
+    if (!user) return;
     console.log(result, provided)
     const todoRef = db
       .collection('users')
-      .doc(props.user.uid)
+      .doc(user.uid)
       .collection('projects')
       .doc(projectId)
       .collection('todos')
@@ -91,11 +83,12 @@ const ProjectDetail: VFC<Props> = (props) => {
     })
   }
 
-  const onUpdateTodoList = () => {
-    const fetchedTodos: Todo[] = []
+  const updateTodoList = () => {
+    if (!user) return;
 
+    const fetchedTodos: Todo[] = []
     fetchTodoList({
-      uid: props.user.uid,
+      uid: user.uid,
       projectId: projectId,
     }).then((snapshot) => {
       snapshot.docs.forEach((doc) => {
@@ -104,7 +97,7 @@ const ProjectDetail: VFC<Props> = (props) => {
           ...doc.data(),
         } as Todo)
       })
-
+  
       const unsubuscribeds: UnsubscribedTodo[] = []
       const subscribeds: SubscribedTodo[] = []
       fetchedTodos.forEach((t) => {
@@ -113,23 +106,17 @@ const ProjectDetail: VFC<Props> = (props) => {
         }
         return subscribeds.push(t)
       })
-
+  
       setUnsubuscribedTodos(unsubuscribeds)
       setSubuscribedTodos(subscribeds)
     })
   }
 
-  return (
-    <DragDropContext onDragEnd={updateTodoSchedule}>
-      <Schedule todoList={subscribedTodos} />
-      <TagList
-        uid={props.user.uid}
-        projectId={projectId}
-        todoList={unsubuscribedTodos}
-        onUpdateTodoList={onUpdateTodoList}
-      />
-    </DragDropContext>
-  )
+  return {
+    subscribedTodos,
+    unsubuscribedTodos,
+    updateTodoSchedule,
+    updateTodoList,
+    projectId
+  }
 }
-
-export default ProjectDetail
