@@ -3,9 +3,8 @@ import { Header } from './components/organisms/Header'
 import { startObserveAuth } from './utils/auth';
 import { Login } from './components/organisms/Login';
 import { db } from './utils/firebaseUils';
-import firebase from 'firebase'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-import ProjectList from './components/ProjectList';
+import {ProjectList} from './components/pages/ProjectList';
 import ProjectForm from './components/ProjectForm';
 import {ProjectDetail} from './components/pages/ProjectDetail';
 import { User } from './schema'
@@ -49,9 +48,9 @@ export function App() {
         {user? (
           <Router>
             <Switch>
-              <Route path="/" exact render={() => <ProjectList user={user} />} />
-              <Route path="/projects/:projectId" render={() => <ProjectDetail user={user} />} />
-              <Route path="/add" render={() => <ProjectForm user={user} />} />
+              <Route path="/" exact component={ProjectList} />
+              <Route path="/projects/:projectId" component={ProjectDetail} />
+              <Route path="/add" component={ProjectForm} />
             </Switch>
           </Router>
         ) : (

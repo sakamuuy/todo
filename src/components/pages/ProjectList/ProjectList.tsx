@@ -1,34 +1,11 @@
-import firebase from 'firebase'
-import { useEffect, useState, VFC } from 'react'
-import { db } from '../utils/firebaseUils'
-import { Project } from '../schema'
+import { Project } from '../../../schema'
 import { Link } from 'react-router-dom'
 
-type Props = {
-  user: firebase.User
+export type Props = {
+  projects: Project[]
 }
 
-const ProjectList: VFC<Props> = (props) => {
-  const [projects, setProjects] = useState<Project[]>([])
-
-  useEffect(() => {
-    db.collection('users')
-      .doc(props.user.uid)
-      .collection('projects')
-      .limit(10)
-      .get()
-      .then((querySnapshot) => {
-        const projectList: Project[] = []
-        querySnapshot.forEach((snapshot) => {
-          const data = {
-            id: snapshot.id,
-            ...snapshot.data(),
-          } as Project
-          projectList.push(data)
-        })
-        setProjects(projectList)
-      })
-  }, [props.user.uid])
+export function Presentation(props: Props) {
 
   return (
     <div>
@@ -45,7 +22,7 @@ const ProjectList: VFC<Props> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {projects.map((p) => {
+          {props.projects.map((p) => {
             return (
               <tr
                 key={p.id}
@@ -64,9 +41,7 @@ const ProjectList: VFC<Props> = (props) => {
           })}
         </tbody>
       </table>
-      {projects.length ? <></> : <div>未登録</div>}
+      {props.projects.length ? <></> : <div>未登録</div>}
     </div>
   )
 }
-
-export default ProjectList

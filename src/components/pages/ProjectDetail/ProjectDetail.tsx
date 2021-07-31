@@ -1,7 +1,7 @@
 import {DragDropContext, DropResult, ResponderProvided} from 'react-beautiful-dnd'
 import Schedule from '../../Schedule'
 import {TagList} from '../../organisms/TagList'
-import { SubscribedTodo, UnsubscribedTodo, User } from '../../../schema'
+import { SubscribedTodo, UnsubscribedTodo } from '../../../schema'
 
 export type Props = {
   updateTodoSchedule: (result: DropResult, provided: ResponderProvided) => void
