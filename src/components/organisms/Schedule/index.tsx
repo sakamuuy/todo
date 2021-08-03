@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { getToday } from '../../utils/date'
+import { getToday } from '../../../utils/date'
 import { Droppable } from 'react-beautiful-dnd'
 import Dummy from './Dummy'
 import { useEffect, useState, useRef } from 'react'
-import { SubscribedTodo } from '../../schema'
+import { SubscribedTodo } from '../../../schema'
 
 const StyledSchedule = styled.div`
   // height: calc(100% - 220px);

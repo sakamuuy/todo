@@ -1,5 +1,5 @@
 import {DragDropContext, DropResult, ResponderProvided} from 'react-beautiful-dnd'
-import Schedule from '../../Schedule'
+import Schedule from '../../organisms/Schedule'
 import {TagList} from '../../organisms/TagList'
 import { SubscribedTodo, UnsubscribedTodo } from '../../../schema'
 
